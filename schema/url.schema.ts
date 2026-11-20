@@ -1,36 +1,42 @@
-import mongoose,{Document,Schema} from 'mongoose'
+import mongoose, { Document, Schema } from "mongoose";
 
-export interface IUrl extends Document{
-    originalUrl:string,
-    shortCode:string,
-    clickCount:number
-    expiresAt:Date,
-    updatedAt:Date
+export interface IUrl extends Document {
+    originalUrl: string;
+    shortCode: string;
+    clickCount: number;
+    expiresAt?: Date;
+    createdAt: Date;
+    updatedAt: Date;
 }
 
-const urlSchema=new Schema<IUrl>({
-    originalUrl:{
-        type:String,
-        required:true,
-        trim:true
-    },
-    shortCode:{
-        type:String,
-        required:true,
-        unique:true,
-        index:true
-    },
-    clickCount:{
-        type:String,
-        default:0
-    },
-    expiredAt:{
-        type:Date,
-        default:null
-    },
-   
+const urlSchema = new Schema<IUrl>(
+    {
+        originalUrl: {
+            type: String,
+            required: true,
+            trim: true
+        },
 
-})
+        shortCode: {
+            type: String,
+            required: true,
+            unique: true,
+            index: true
+        },
 
-export const Url=mongoose.model<IUrl>("Url",urlSchema)
+        clickCount: {
+            type: Number,
+            default: 0
+        },
 
+        expiresAt: {
+            type: Date,
+            default: null
+        }
+    },
+    {
+        timestamps: true
+    }
+);
+
+export const Url = mongoose.model<IUrl>("Url", urlSchema);
