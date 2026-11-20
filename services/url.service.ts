@@ -4,7 +4,7 @@ import { generateShortCode } from "../utils/shortCode.js"
 
 
 
-export const createShortUrl=async(originalUrl:string,expiresAt?:Date)=>{
+export const createShortUrl=async(originalUrl:string,userId:string,expiresAt?:Date)=>{
     try{
         new URL(originalUrl)
     }catch(err){
@@ -16,6 +16,7 @@ export const createShortUrl=async(originalUrl:string,expiresAt?:Date)=>{
         shortCode=generateShortCode();
     }
     const url=await Url.create({
+        userId,
         originalUrl,
         shortCode,
         expiresAt

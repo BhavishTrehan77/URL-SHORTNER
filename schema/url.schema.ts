@@ -1,6 +1,7 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IUrl extends Document {
+    userId:mongoose.Types.ObjectId,
     originalUrl: string;
     shortCode: string;
     clickCount: number;
@@ -10,7 +11,13 @@ export interface IUrl extends Document {
 }
 
 const urlSchema = new Schema<IUrl>(
+
     {
+        userId:{
+            type:mongoose.Schema.Types.ObjectId,
+            ref:'User',
+            required:true
+        },
         originalUrl: {
             type: String,
             required: true,

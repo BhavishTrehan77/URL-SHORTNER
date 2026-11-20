@@ -11,6 +11,7 @@ export const shortURL = async (
 
   const ans = await createShortUrl(
     originalUrl,
+    req.user.id,
     expiresAt ? new Date(expiresAt) : undefined
   );
 
