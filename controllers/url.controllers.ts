@@ -2,6 +2,8 @@ import type{ Request, Response } from "express";
 import { createShortUrl } from "../services/url.service.js";
 import { Url } from "../schema/url.schema.js";
 import { GetCache, SetCache } from "../routes/redis.helper.js";
+import { analyticQueue } from "../queue/Analytics.queue.js";
+import AnalyticalQueue from "../queue/Anlytical.queue.js";
 
 export const shortURL = async (
   req: Request,
@@ -29,8 +31,12 @@ export const redirectUrl=async(req:Request,res:Response)=>{
         const cachedUrl=await GetCache(cacheKey)
         if(cachedUrl){
             console.log("cache hit")
-            return res.redirect(cachedUrl);
-        }
+            const cached=JSON.parse(cachedUrl)
+             await analyticQueue.add("record-click",{shortCode},{attempts:3,backoff:{type:"exponential",delay:1000},removeOnComplete:100,removeOnFail:500})
+             await AnalyticalQueue.add("record-analytics",{userId:cached.userId,shortCode,userAgent:req.headers["user-agent"],referrer:req.headers.referer})
+
+            return res.redirect(cached.originalUrl);
+        } 
         console.log("cache miss")
 
         const url=await Url.findOne({shortCode})
@@ -60,7 +66,9 @@ export const redirectUrl=async(req:Request,res:Response)=>{
     ttl = Math.min(3600, remainingSeconds);
 }
   
-  await SetCache(cacheKey,url.originalUrl,ttl)
+  await SetCache(cacheKey,JSON.stringify({originalUrl:url.originalUrl,userId:url.userId.toString()}),ttl)
+  await analyticQueue.add("record-click",{shortCode},{attempts:3,backoff:{type:"exponential",delay:1000},removeOnComplete:100,removeOnFail:500})
+  await AnalyticalQueue.add("record-analytics",{userId:url.userId.toString(),shortCode,userAgent:req.headers["user-agent"],referrer:req.headers.referer})
   
     return res.redirect(url.originalUrl)
     }catch (err) {

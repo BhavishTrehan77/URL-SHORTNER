@@ -33,5 +33,4 @@ export const createShortUrl=async(originalUrl:string,userId:string,expiresAt?:Da
     })
    return url
 
-  
 }
