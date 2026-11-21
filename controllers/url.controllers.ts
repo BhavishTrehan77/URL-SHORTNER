@@ -7,12 +7,13 @@ export const shortURL = async (
   req: Request,
   res: Response
 ) => {
-  const { originalUrl, expiresAt } = req.body;
+  const { originalUrl, expiresAt,customAlias } = req.body;
 
   const ans = await createShortUrl(
     originalUrl,
     req.user.id,
-    expiresAt ? new Date(expiresAt) : undefined
+    expiresAt ? new Date(expiresAt) : undefined,
+    customAlias
   );
 
   return res.status(201).json({
@@ -44,6 +45,7 @@ export const redirectUrl=async(req:Request,res:Response)=>{
       });
       
     }
+    let ttl=3600
     if (url.expiresAt) {
     const remainingSeconds = Math.floor(
         (url.expiresAt.getTime() - Date.now()) / 1000
@@ -58,7 +60,7 @@ export const redirectUrl=async(req:Request,res:Response)=>{
     ttl = Math.min(3600, remainingSeconds);
 }
   
-  await SetCache(cacheKey,url.originalUrl,3600)
+  await SetCache(cacheKey,url.originalUrl,ttl)
   
     return res.redirect(url.originalUrl)
     }catch (err) {
