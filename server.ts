@@ -3,6 +3,7 @@ import mongoose from 'mongoose'
 import 'dotenv/config'
 import router from './routes/url.routes.js'
 import UserRouter from "./routes/user.routes.js"
+import { ErrorHandeling } from './middleware/errorHandelingMidd.js'
 const app=express()
 
 
@@ -24,6 +25,8 @@ app.get("/health",async(req,resp)=>{
 
 app.use("/api/v1",router)
 app.use("/api/v1",UserRouter)
+
+app.use(ErrorHandeling)
 app.listen(3000)
 
 

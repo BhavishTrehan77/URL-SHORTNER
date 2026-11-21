@@ -1,4 +1,4 @@
-import type{ Request, Response } from "express";
+import type{ Request, Response,NextFunction } from "express";
 import { createShortUrl } from "../services/url.service.js";
 import { Url } from "../schema/url.schema.js";
 import { GetCache, SetCache } from "../routes/redis.helper.js";
@@ -7,8 +7,10 @@ import AnalyticalQueue from "../queue/Anlytical.queue.js";
 
 export const shortURL = async (
   req: Request,
-  res: Response
+  res: Response,
+  next:NextFunction
 ) => {
+  try{
   const { originalUrl, expiresAt,customAlias } = req.body;
 
   const ans = await createShortUrl(
@@ -22,9 +24,12 @@ export const shortURL = async (
     message: "Short URL created successfully",
     data: ans
   });
+  }catch(err){
+    next(err)
+  }
 };
 
-export const redirectUrl=async(req:Request,res:Response)=>{
+export const redirectUrl=async(req:Request,res:Response,next:NextFunction)=>{
     try{
         const{shortCode}=req.params
         const cacheKey=`url:${shortCode}`;
@@ -74,10 +79,6 @@ export const redirectUrl=async(req:Request,res:Response)=>{
     }catch (err) {
     console.log("REDIRECT ERROR:", err);
 
-    return res.status(500).json({
-      message: err instanceof Error
-        ? err.message
-        : "Something went wrong"
-    });
+   next(err)
   }
 }
