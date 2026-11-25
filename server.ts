@@ -13,7 +13,7 @@ app.use(express.json())
 const PORT=Number(process.env.PORT)||3000
 
 async function connection(){
-    await mongoose.connect(process.env.MONGO_URI)
+    await mongoose.connect(process.env.MONGO_URI!)
     console.log("connection success")
 }
 connection()
@@ -25,7 +25,7 @@ app.get("/health",async(req,resp)=>{
   });
 })
 
-
+//my name is bhavish
 app.use("/api/v1",router)
 app.use("/api/v1",UserRouter)
 

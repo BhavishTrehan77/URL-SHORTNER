@@ -3,7 +3,7 @@ import {Queue} from "bullmq"
 
 export const analyticQueue=new Queue("analytics-job",{
     connection:{
-        host:"localhost",
+        host:"redis-container",
         port:6379
     }
 })

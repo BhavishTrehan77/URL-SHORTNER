@@ -1,4 +1,6 @@
 
+import type{Request,Response,NextFunction} from 'express'
+
 export const ErrorHandeling=(err:any,req:Request,res:Response,next:NextFunction)=>{
     console.log("Error",err);
     const statusCode=err.statusCode||500

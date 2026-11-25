@@ -25,7 +25,7 @@ export const AnalyticWorker = new Worker(
   },
   {
     connection: {
-      host: "localhost",
+      host: "redis-container",
       port: 6379
     }
   }

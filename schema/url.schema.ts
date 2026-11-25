@@ -1,11 +1,11 @@
 import mongoose, { Document, Schema } from "mongoose";
 
-export interface IUrl extends Document {
+export interface IUrl {
     userId:mongoose.Types.ObjectId,
     originalUrl: string;
     shortCode: string;
     clickCount: number;
-    expiresAt?: Date;
+    expiresAt: Date | null;
     createdAt: Date;
     updatedAt: Date;
 }

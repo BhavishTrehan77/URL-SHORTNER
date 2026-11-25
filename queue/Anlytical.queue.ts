@@ -2,7 +2,7 @@ import{Queue} from "bullmq"
 
 const AnalyticalQueue=new Queue("Ananlytical-Queue",{
     connection:{
-        host:"localhost",
+        host:"redis-container",
         port:6379
     }
 })

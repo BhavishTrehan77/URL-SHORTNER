@@ -6,7 +6,7 @@ import { validate, validation } from '../middleware/validation.js'
 
 const router=express.Router()
 
-router.post("/url",Auth,RateLimiting,validation,validate,shortURL)
+router.post("/url",Auth,RateLimiting,...validation,validate,shortURL)
 
 router.get("/:shortCode",redirectUrl)
 

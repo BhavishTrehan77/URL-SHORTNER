@@ -9,8 +9,8 @@ export async function Auth(req:Request,res:Response,next:NextFunction){
             message:"no auth header found"
         })
     }
-    const token=AuthHeader.split(" ")[1]
-    const decode=jwt.verify(token,process.env.AccSecKey)
+    const token=AuthHeader.split(" ")[1]!
+    const decode=jwt.verify(token,process.env.AccSecKey!)
     req.user=decode
     return next()
     }catch(err){

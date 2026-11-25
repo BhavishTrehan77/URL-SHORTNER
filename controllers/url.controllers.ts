@@ -31,7 +31,7 @@ export const shortURL = async (
 
 export const redirectUrl=async(req:Request,res:Response,next:NextFunction)=>{
     try{
-        const{shortCode}=req.params
+        const shortCode=req.params.shortCode!
         const cacheKey=`url:${shortCode}`;
         const cachedUrl=await GetCache(cacheKey)
         if(cachedUrl){

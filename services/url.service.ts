@@ -29,7 +29,7 @@ export const createShortUrl=async(originalUrl:string,userId:string,expiresAt?:Da
         userId,
         originalUrl,
         shortCode,
-        expiresAt
+        expiresAt:expiresAt||null
     })
    return url
 

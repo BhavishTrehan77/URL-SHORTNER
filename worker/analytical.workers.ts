@@ -19,7 +19,7 @@ const AnalyticalWorker=new Worker("Ananlytical-Queue",async(job)=>{
         })
         console.log("Analytics event saved")
     
-},{connection:{host:"localhost",port:6379}})
+},{connection:{host:"redis-container",port:6379}})
 
 AnalyticalWorker.on("completed",(job)=>{
     console.log(`Analytics event job ${job.id} completed`)
